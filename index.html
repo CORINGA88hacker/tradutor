@@ -1,182 +1,20 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Tradutor de Texto</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Roboto', sans-serif;
-      background-color: #0d0d0d;
-      color: #fff;
-    }
-
-    header {
-      background-color: #8B0000;
-      padding: 20px;
-      text-align: center;
-      font-size: 2rem;
-      font-weight: bold;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.6);
-      text-transform: uppercase;
-      letter-spacing: 2px;
-    }
-
-    main {
-      padding: 40px 20px;
-      max-width: 900px;
-      margin: auto;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 10px;
-      font-size: 1.1rem;
-      color: #ccc;
-    }
-
-    textarea {
-      width: 100%;
-      height: 150px;
-      padding: 15px;
-      font-size: 1rem;
-      background: #1c1c1c;
-      color: #fff;
-      border: 2px solid #8B0000;
-      border-radius: 8px;
-      resize: vertical;
-      margin-bottom: 20px;
-      transition: border 0.3s ease;
-    }
-
-    textarea:focus {
-      border-color: #ff3030;
-      outline: none;
-    }
-
-    select, button {
-      padding: 10px 15px;
-      font-size: 1rem;
-      border-radius: 6px;
-      border: none;
-      margin-right: 10px;
-    }
-
-    select {
-      background: #333;
-      color: #fff;
-      border: 1px solid #8B0000;
-    }
-
-    button {
-      background-color: #8B0000;
-      color: white;
-      cursor: pointer;
-      transition: background 0.3s, transform 0.2s;
-    }
-
-    button:hover {
-      background-color: #a00000;
-      transform: scale(1.05);
-    }
-
-    .resultado {
-      margin-top: 30px;
-      padding: 20px;
-      background: #1c1c1c;
-      border-left: 4px solid #8B0000;
-      font-size: 1.2rem;
-      white-space: pre-wrap;
-      border-radius: 6px;
-      min-height: 100px;
-      box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
-      transition: all 0.3s;
-    }
-
-    .footer {
-      text-align: center;
-      padding: 20px;
-      color: #666;
-      font-size: 0.9rem;
-    }
-  </style>
+  <title>Gerador de Imagens com IA</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>🔁 Tradutor de Texto</header>
+  <header>🖼️ Gerador de Imagens com IA</header>
   <main>
-    <label for="texto">Texto para traduzir:</label>
-    <textarea id="texto" placeholder="Digite ou cole o texto aqui..."></textarea>
-
-    <div style="margin-bottom: 20px;">
-      <label for="from">De:</label>
-      <select id="from">
-        <option value="auto">Detectar</option>
-        <option value="en">Inglês</option>
-        <option value="pt">Português</option>
-        <option value="es">Espanhol</option>
-        <option value="fr">Francês</option>
-      </select>
-
-      <label for="to">Para:</label>
-      <select id="to">
-        <option value="pt">Português</option>
-        <option value="en">Inglês</option>
-        <option value="es">Espanhol</option>
-        <option value="fr">Francês</option>
-      </select>
-
-      <button onclick="traduzir()">Traduzir</button>
-    </div>
-
-    <div class="resultado" id="resultado">A tradução aparecerá aqui...</div>
+    <textarea id="prompt" placeholder="Descreva a imagem... Ex: Gato astronauta na lua"></textarea>
+    <button onclick="gerarImagem()">Gerar Imagem</button>
+    <div id="imagem"></div>
   </main>
-
-  <div class="footer">
-    Feito com ❤️ em preto & vermelho carmesim
-  </div>
-
-  <script>
-    async function traduzir() {
-      const texto = document.getElementById('texto').value.trim();
-      const from = document.getElementById('from').value;
-      const to = document.getElementById('to').value;
-      const resultadoDiv = document.getElementById('resultado');
-
-      if (!texto) {
-        resultadoDiv.textContent = '⚠️ Por favor, digite um texto.';
-        return;
-      }
-
-      resultadoDiv.textContent = '⏳ Traduzindo...';
-
-      try {
-        const response = await fetch("https://corsproxy.io/?https://libretranslate.de/translate", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            q: texto,
-            source: from,
-            target: to,
-            format: "text"
-          })
-        });
-
-        const data = await response.json();
-
-        if (data.translatedText) {
-          resultadoDiv.textContent = data.translatedText;
-        } else {
-          resultadoDiv.textContent = "❌ Erro ao traduzir.";
-        }
-
-      } catch (error) {
-        resultadoDiv.textContent = "❌ Erro na conexão com a API de tradução.";
-      }
-    }
-  </script>
+  <footer>Feito com ❤️ usando Stable Diffusion + HuggingFace</footer>
+  <script src="script.js"></script>
 </body>
 </html>
