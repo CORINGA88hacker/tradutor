@@ -7,23 +7,11 @@ async function gerarImagem() {
     return;
   }
 
-  imagemDiv.innerHTML = "<p>⏳ Gerando imagem...</p>";
+  imagemDiv.innerHTML = "<p>⏳ Gerando imagem usando IA pública...</p>";
 
-  try {
-    const response = await fetch("https://corsproxy.io/?https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-2", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer hf_***" // opcional: insira sua HuggingFace API key aqui se quiser
-      },
-      body: JSON.stringify({ inputs: prompt })
-    });
+  // Usando API pública com prompt embutido como parte do nome (fake endpoint de exemplo)
+  const encodedPrompt = encodeURIComponent(prompt);
+  const url = `https://image.pollinations.ai/prompt/${encodedPrompt}`;
 
-    const blob = await response.blob();
-    const imgURL = URL.createObjectURL(blob);
-    imagemDiv.innerHTML = `<img src="\${imgURL}" alt="Imagem gerada">`;
-
-  } catch (error) {
-    imagemDiv.innerHTML = "<p>❌ Erro ao gerar imagem. Tente novamente mais tarde.</p>";
-  }
+  imagemDiv.innerHTML = `<img src="${url}" alt="Imagem gerada com IA">`;
 }
