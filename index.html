@@ -1,20 +1,78 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Gerador de Imagens com IA Pública</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Enviar Seguidores</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body {
+      font-family: Arial;
+      background: #f0f0f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .painel {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      width: 300px;
+    }
+    input,
+    button {
+      padding: 10px;
+      width: 100%;
+      margin-top: 10px;
+      font-size: 16px;
+    }
+    button {
+      background: #0095f6;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #007ed6;
+    }
+  </style>
 </head>
 <body>
-  <header>🖼️ IA Pública - Geração de Imagem</header>
-  <main>
-    <textarea id="prompt" placeholder="Descreva a imagem... Ex: dragão vermelho em um castelo medieval"></textarea>
-    <button onclick="gerarImagem()">Gerar Imagem</button>
-    <div id="imagem"></div>
-  </main>
-  <footer>Feito com ❤️ usando IA pública sem login</footer>
-  <script src="script.js"></script>
+  <div class="painel">
+    <h2>🚀 Enviar Seguidores</h2>
+    <input type="text" id="usuario" placeholder="@usuário" />
+    <button onclick="enviar()">Enviar Seguidores</button>
+    <p id="resposta" style="margin-top: 10px;"></p>
+  </div>
+
+  <script>
+    function enviar() {
+      const user = document.getElementById("usuario").value.trim().replace("@", "");
+      if (!user) {
+        alert("Digite o nome da conta!");
+        return;
+      }
+
+      fetch("http://localhost:5000/enviar", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ alvo: user }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          document.getElementById("resposta").innerText = data.mensagem;
+        })
+        .catch((err) => {
+          document.getElementById("resposta").innerText = "Erro ao enviar!";
+          console.error(err);
+        });
+    }
+  </script>
 </body>
 </html>
